@@ -214,6 +214,30 @@
             color: #007bff;
             font-weight: bold;
         }
+        .watermark-grid {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 9999;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        opacity: 0.10;
+        }
+        .watermark-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1em; /* 与正文相近 */
+            color: #222;
+            font-weight: bold;
+            transform: rotate(-25deg);
+            user-select: none;
+            white-space: nowrap;
+        }   
     </style>
     <script>
         // 当页面加载完成时执行
@@ -281,6 +305,32 @@
         });
     </script>
 </head>
+<div class="watermark-grid">
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+    <div class="watermark-cell">ElenaZinn.github.io</div>
+</div>
 <body>
     <nav id="toc">
         <h3 style="margin-top: 0;">目录</h3>
@@ -447,7 +497,7 @@
             <div class="tip">
                 <h4>Fly bus购票渠道：</h4>
                 <div class="image-container">
-                    <img src="flybus.png" alt="冰岛 Icelandia | Cathy 小红书店铺" style="max-width: 200px; border: 1px solid #ddd;" />
+                    <img src="/travel-guides/images/flybus.png" alt="冰岛 Icelandia | Cathy 小红书店铺" style="max-width: 200px; border: 1px solid #ddd;" />
                 </div>
             </div>
             
@@ -491,7 +541,7 @@
             <p><li><strong>地图参考（Google Maps）：</strong><a href="https://maps.app.goo.gl/bz3bazetUAzynN9w5" target="_blank">第一天下午景点地图</a></li></p>
             <div class="tip">
                 <div class="image-container">
-                    <img src="leiDay1.png" alt="雷克雅未克City walk-D1" style="max-width: 700px; border: 1px solid #ddd;" />
+                    <img src="/travel-guides/images/leiDay1.png" alt="雷克雅未克City walk-D1" style="max-width: 700px; border: 1px solid #ddd;" />
                 </div>
             </div>
         </div>
@@ -520,7 +570,7 @@
             <div class="tip">
             
                 <div class="image-container">
-                    <img src="leiDay2.png" alt="雷克雅未克City walk-D2" style="max-width: 700px; border: 1px solid #ddd;" />
+                    <img src="/travel-guides/images/leiDay2.png" alt="雷克雅未克City walk-D2" style="max-width: 700px; border: 1px solid #ddd;" />
                 </div>
             </div>
         </div>
@@ -549,7 +599,7 @@
             <p><strong>地图参考（Google Maps）：</strong><a href="https://maps.app.goo.gl/EgrrNUaMbUdCK6kv8" target="_blank">三日游 Day 1 地图</a></p>
             <div class="tip">
                 <div class="image-container">
-                    <img src="tourDay1.png" alt="南岸三日D1" style="max-width: 700px; border: 1px solid #ddd;" />
+                    <img src="/travel-guides/images/tourDay1.png" alt="南岸三日D1" style="max-width: 700px; border: 1px solid #ddd;" />
                 </div>
             </div>
 
@@ -567,7 +617,7 @@
             <p><strong>地图参考（Google Maps）：</strong><a href="https://maps.app.goo.gl/1vSzFbjyD66Q2YT8A" target="_blank">三日游 Day 2 地图</a></p>
             <div class="tip">
                 <div class="image-container">
-                    <img src="tourDay2.png" alt="南岸三日D2" style="max-width: 700px; border: 1px solid #ddd;" />
+                    <img src="/travel-guides/images/tourDay2.png" alt="南岸三日D2" style="max-width: 700px; border: 1px solid #ddd;" />
                 </div>
             </div>
 
@@ -582,7 +632,7 @@
             <p><strong>地图参考（Google Maps）：</strong><a href="https://maps.app.goo.gl/z16mKgrM1Y9GquYc8" target="_blank">三日游 Day 3 地图</a></p>
             <div class="tip">
                 <div class="image-container">
-                    <img src="tourDay3.png" alt="南岸三日D3" style="max-width: 700px; border: 1px solid #ddd;" />
+                    <img src="/travel-guides/images/tourDay3.png" alt="南岸三日D3" style="max-width: 700px; border: 1px solid #ddd;" />
                 </div>
             </div>
         </div>
@@ -673,14 +723,14 @@
             <li><strong>位置：</strong>BSÍ Bus Terminal Reykjavík，在车站主楼右手边。</li>
             <div class="tip">
                 <div class="image-container">
-                    <img src="laguagestory.png" alt="寄存位置" style="max-width: 350px; border: 1px solid #ddd;" />
+                    <img src="/travel-guides/images/laguagestory.png" alt="寄存位置" style="max-width: 350px; border: 1px solid #ddd;" />
                 </div>
             </div>
             <li><strong>营业时间：</strong>24小时，有监控，安全可靠。</li>
             <li><strong>价格参考：</strong>XL尺寸的寄存柜24小时约3990 ISK，可放下26寸行李箱+背包。</li>
             <div class="tip">
                 <div class="image-container">
-                    <img src="storysize.png" alt="寄存尺寸" style="max-width: 350px; border: 1px solid #ddd;" />
+                    <img src="/travel-guides/images/storysize.png" alt="寄存尺寸" style="max-width: 350px; border: 1px solid #ddd;" />
                 </div>
             </div>
         </ul>
