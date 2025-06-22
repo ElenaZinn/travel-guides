@@ -4,7 +4,282 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>冰岛旅行攻略</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-color: #f9f9f9;
+        }
+        #toc {
+            width: 350px;
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: #f8f9fa;
+            padding: 30px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            scrollbar-width: thin;
+            scrollbar-color: #90A4AE #CFD8DC;
+            max-height: calc(100vh - 20px);
+            padding-bottom: 40px;
+            transition: transform 0.3s ease;
+        }
+        #toc.hidden {
+            transform: translateX(-100%);
+        }
+        #content {
+            margin-left: 340px;
+            max-width: 800px;
+            padding: 40px;
+            margin-right: 40px;
+            transition: all 0.3s ease;
+        }
+        #content.expanded {
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 40px;
+            padding-right: 40px;
+            max-width: 800px;
+        }
+        @media (max-width: 1200px) {
+            #content.expanded {
+                margin-left: 40px;
+                margin-right: 40px;
+            }
+        }
+        #toggle-toc {
+            position: fixed;
+            left: 350px;
+            top: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        #toggle-toc:hover {
+            background-color: #0056b3;
+            width: 28px;
+        }
+        #toggle-toc.hidden {
+            left: 0;
+            transform: rotate(180deg);
+        }
+        #toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+        #toc li {
+            margin: 10px 0;
+        }
+        #toc a {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        #toc a:hover {
+            background-color: #e9ecef;
+            color: #007bff;
+        }
+        #toc .toc-h2 {
+            padding-left: 20px;
+        }
+        #toc .toc-h3 {
+            padding-left: 40px;
+        }
+        #toc .toc-h4 {
+            padding-left: 60px;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 2em;
+            margin-top: 40px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h3 {
+            font-size: 1.5em;
+            border-bottom: 1px solid #ccc;
+            margin-top: 30px;
+            padding-bottom: 8px;
+        }
+        h4 {
+            font-size: 1.2em;
+            margin-top: 25px;
+        }
+        ul, ol {
+            list-style-position: inside;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 12px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .note {
+            background-color: #eaf6ff;
+            border-left: 5px solid #3498db;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .warning {
+            background-color: #fff4e5;
+            border-left: 5px solid #f39c12;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        strong {
+            color: #c0392b;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .day-block {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        /* 为Webkit浏览器（Chrome、Safari等）定制滚动条样式 */
+        #toc::-webkit-scrollbar {
+            width: 8px;
+        }
+        #toc::-webkit-scrollbar-track {
+            background: #CFD8DC;
+            border-radius: 4px;
+        }
+        #toc::-webkit-scrollbar-thumb {
+            background-color: #90A4AE;
+            border-radius: 4px;
+            border: 2px solid #CFD8DC;
+        }
+        #toc::-webkit-scrollbar-thumb:hover {
+            background-color: #78909C;
+        }
+        #toc a.active {
+            background-color: #e9ecef;
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        // 当页面加载完成时执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有章节
+            const sections = document.querySelectorAll('h2, h3, h4');
+            // 获取所有目录链接
+            const navLinks = document.querySelectorAll('#toc a');
+            // 获取目录和内容元素
+            const toc = document.getElementById('toc');
+            const content = document.getElementById('content');
+            const toggleButton = document.getElementById('toggle-toc');
+            
+            // 添加目录切换功能
+            toggleButton.addEventListener('click', function() {
+                toc.classList.toggle('hidden');
+                content.classList.toggle('expanded');
+                toggleButton.classList.toggle('hidden');
+            });
+
+            // 创建 Intersection Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // 当章节进入视图
+                    if (entry.isIntersecting) {
+                        // 移除所有链接的active类
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        
+                        // 找到对应的目录链接并添加active类
+                        const id = entry.target.getAttribute('id');
+                        const correspondingLink = document.querySelector(`#toc a[href="#${id}"]`);
+                        if (correspondingLink) {
+                            correspondingLink.classList.add('active');
+                        }
+                    }
+                });
+            }, {
+                // 设置根边距，提前触发交叉
+                rootMargin: '-20% 0px -60% 0px'
+            });
+
+            // 观察所有章节
+            sections.forEach(section => {
+                if (section.id) {
+                    observer.observe(section);
+                }
+            });
+
+            // 平滑滚动效果
+            document.querySelectorAll('#toc a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        // 更新URL，但不跳转
+                        history.pushState(null, null, targetId);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
     <nav id="toc">
@@ -34,8 +309,484 @@
     </nav>
     <button id="toggle-toc" aria-label="切换目录">◀</button>
     <div id="content">
-        <!-- Your existing content here -->
+        <h1>超详细冰岛旅行攻略</h1>
+
+        <!-- Part 1: Visa Application -->
+        <h2 id="part1">第一部分：签证申请</h2>
+        <p><strong>基本原则：</strong>应向本次申根区行程中逗留时间最长的国家申请签证。如果觉得流程复杂，可以直接联系旅行社代办。</p>
+        
+        <h3 id="materials">申请材料清单</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>材料名称</th>
+                    <th>备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>申根签证个人申请表</td>
+                    <td>在VFS官网下载填写。</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>护照原件及复印件</td>
+                    <td>护照有效期需超过预计离开申根区日期90天，有连续两页空白页。复印件需要2份，包含首页、签名页、所有签证页。</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>白底证件照</td>
+                    <td>2张，近半年内拍摄，尺寸约为3.5x4.5cm或4x5cm。</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>身份证复印件</td>
+                    <td>正反面复印在同一页。</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>户口本复印件</td>
+                    <td>所有包含文字信息的页面都需要复印。</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>结婚证复印件</td>
+                    <td>如已婚，需提供。</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>银行流水</td>
+                    <td>近3-6个月。</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>固定资产证明</td>
+                    <td>房产证明、近3-6个月存款证明等，有什么准备什么</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>往返机票预订单</td>
+                    <td>需覆盖整个行程。</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>住宿预订单</td>
+                    <td>需覆盖行程中的每一晚。</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>行程单</td>
+                    <td>Excel 表详细列出每日行程、交通和住宿。</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>海外旅行保险</td>
+                    <td>保额和险种需满足申根签证要求。</td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>公司营业执照副本</td>
+                    <td>复印件加盖公司公章（鲜章）。</td>
+                </tr>
+                <tr>
+                    <td>14</td>
+                    <td>在职与收入证明</td>
+                    <td>使用公司抬头纸打印，负责人签字并加盖公章。</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="note">所有复印件均可使用黑白复印。</p>
+
+        <h3 id="key-materials">重点材料注意事项</h3>
+        <ul>
+            <li><strong>申请表与网站：</strong>申请官网为 <a href="https://www.vfsglobal.com/en/individuals/index.html" target="_blank">VFS Global</a>。网站可能不稳定，需多尝试。各省签证中心工作时间不同，请提前查询。</li>
+            <li><strong>户口本：</strong>在深圳递签时，需要携带户口本原件以供查验。</li>
+            <li><strong>财务证明：</strong>银行流水和存款证明建议在递签前7天内打印。需为<strong>英文版</strong>（流水仅需标题为英文），建议余额保持在<strong>3-5万元</strong>人民币。</li>
+            <li><strong>在职收入证明：</strong>需公司盖公章，请预留准备和邮寄时间。证明上的旅行日期需从实际出发日写起（如从国内去香港转机，从离开国内当天算起）。</li>
+            <li><strong>机票预订单：</strong> 中国无直飞冰岛航班，注意核实转机地是否需要过境签证</li>
+            <li style="padding-left: 2em;"></strong>若经申根国（如芬兰）转机，持有效申根签无需额外办理过境签。<strong>但若转机时间超24小时或涉及非申根国，务必再次核实过境签政策</strong>，即使航司说不需要，也建议二次确认。</li>
+            <li style="padding-left: 2em;">欧洲航司员工罢工、冰岛天气不好都可能导致行程变更，请提前做好心理准备</li>
+            <li><strong>住宿预订单：</strong>可用Airbnb或Booking。</li>
+            <li style="padding-left: 2em;">Airbnb通常退改政策更灵活。</li> 
+            <li style="padding-left: 2em;">若参加了旅行团（如Troll.is），可发邮件来获取旅行团期间的住宿证明。</li>  
+            <li style="padding-left: 2em;">签证办理期间牢记自己的行程，如果有北京的签证官打电话核实行程，答不出来有可能被取消签证</li> 
+            <li style="padding-left: 2em;">预定好行程后尽量不要更改，有的酒店会给欧洲移民局上报，一旦移民局认为有移民风险，在上飞机前或行程中都有肯撤销签证，导致行程中止</li>    
+            <li><strong>保险：</strong>可在支付宝搜索"海外保险"（如众安保险），确保购买的产品符合申根签证要求。</li>
+        </ul>
+
+        <!-- Part 2: Pre-trip Preparation -->
+        <h2 id="part2">第二部分：出行前准备</h2>
+        <h3 id="essentials">必备物品与穿搭</h3>
+        <ul>
+            <li><strong>通讯：</strong>在飞猪等平台按需购买欧洲电话卡。</li>
+            <li><strong>衣物（三明治穿衣法: 速干+抓绒+冲锋衣）：</strong>
+                <ul>
+                    <li style="padding-left: 2em;"><strong>核心装备：</strong>防风防水的外套和裤子、抓绒衣、速干衣、雪地靴（冰川徒步必备）、徒步鞋、防水手套、帽子、羊毛袜（推荐美丽奴羊毛）。</li>
+                    <li style="padding-left: 2em;"><strong>品牌推荐：</strong>迪卡侬性价比高，但热门款（如冲锋衣MH500、雪地裤/靴SH500）易断货，建议尽早购买。</li>
+                    <li style="padding-left: 2em;"><strong>本地购买：</strong>如果装备没带够，可在冰岛本地的 <code>icewear</code> 或 <code>66°North</code> 商店补充。</li>
+                </ul>
+            </li>
+            <li><strong>实用小物：</strong>
+                <ul>
+                    <li style="padding-left: 2em;"><strong>RFID防盗卡膜：</strong>保护信用卡，防止被盗刷。</li>
+                    <li style="padding-left: 2em;"><strong>AirTag：</strong>担心行李丢失可用于定位。</li>
+                    <li style="padding-left: 4em;">airTag里有电池，有的航司会开箱（航司抽查，概率比较小），建议放在箱子里明显的地方，就算要开箱也很快能看到</li>
+                    <li style="padding-left: 2em;"><strong>欧洲转换插头。</strong></li>
+                    <li style="padding-left: 2em;"><strong>防滑鞋套（简易冰爪）：</strong>在积雪或结冰路面行走时非常有用。</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3 id="transport">交通与打印文件</h3>
+        <ul>
+            <li><strong>深圳出发：</strong>可从蛇口码头坐船（约30分钟）直达香港机场，用护照过关，还可退税120港币。购票可在微信小程序"蛇口招商邮轮购票"上进行。<strong>注意：</strong>部分航司（如芬兰航空）不支持在码头托运。</li>
+            <li><strong>机场大巴 (Flybus)：</strong>连接KEF机场与市区，会运营至最后一班航班抵达。可在小红书店铺"冰岛 Icelandia | Cathy"购买，小红书号：620395018。
+
+            <div class="tip">
+                <h4>Fly bus购票渠道：</h4>
+                <div class="image-container">
+                    <img src="flybus.png" alt="冰岛 Icelandia | Cathy 小红书店铺" style="max-width: 200px; border: 1px solid #ddd;" />
+                </div>
+            </div>
+            
+            </li>
+        </ul>
+        <div class="warning">
+            <h4>起飞前务必打印！</h4>
+            <ol>
+                <li><strong>飞机行程单：</strong>入境申根区（如在芬兰）过海关时备查。</li>
+                <li><strong>Flybus车票：</strong>在机场换取车票。大巴先到BSI总站，凭此票换乘小巴到酒店附近站点。</li>
+                <li><strong>第一个住宿地点地址：</strong>打印出来给机场车票换取处的工作人员和小巴司机看，方便确认下车站点。</li>
+                <li><strong>旅行团预订单：</strong>一般是雷市往返，以备司机核验</li>
+            </ol>
+        </div>
+
+        <h3 id="other-notes">其他注意事项</h3>
+        <ul>
+           <li><strong>芬兰转机液体规定：</strong>每人可携带的单件液体不超过100ml，总量不超过1升（旧规，新规为2升，但建议按严执行），所有液体需放入透明密封袋。
+                <br>详情参考：<a href="https://www.xiaohongshu.com/explore/66d70970000000001f01523b" target="_blank">芬兰转机液体经验贴</a>
+           </li>
+           <li><strong>雷克雅未克巴士站地图：</strong><a href="https://busstop.is/" target="_blank">Bus Stop Map</a></li>
+        </ul>
+
+        <!-- Part 3: Itinerary -->
+        <h2 id="part3">第三部分：行程安排</h2>
+        <p class="note"><strong>通用提示：</strong>冰岛酒店通常<strong>15:00后入住，11:00前退房</strong>。可将行李寄存在BSI总站（24小时）。推荐使用 <strong>Google Maps</strong> 导航，非常精准。</p>
+
+        <div class="day-block">
+            <h4 id="day1">第一天：抵达雷克雅未克 & 市区漫步</h4>
+            下午抵达后，可游览雷克雅未克市区。主要景点集中，步行45分钟可逛完：
+            <p><li><strong>出国芬兰转机教程：</strong><a href="https://www.xiaohongshu.com/explore/679b0107000000001703aad5?app_platform=ios&app_version=8.88&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBCTXtGVM_YnXvBjtOsf5RCBGkMRRYPstDT3dvKrb-UCI=&author_share=1&xhsshare=WeixinSession&shareRedId=N0o1Qjk6SEA2NzUyOTgwNjczOTo1NzZL&apptime=1750578947&share_id=c98b55722c8a4a9b92fa9f0755b170c5" target="_blank">出国赫尔辛基万塔机场转机教程</a></li>
+            <li><strong>景点推荐（非游玩顺序，请自行安排）：</strong></li>
+            <ul>
+                <li style="padding-left: 2em;">托宁湖 (Tjörnin)</li>
+                <li style="padding-left: 2em;">哈帕音乐厅 (Harpa Concert Hall)</li>
+                <li style="padding-left: 2em;">彩虹街 (Skólavörðustígur Rainbow Street) - 纪念品店集中于此</li>
+                <li style="padding-left: 2em;">哈尔格林姆斯大教堂 (Hallgrímskirkja)</li>
+            </ul>
+            <p><li><strong>购物与补给：</strong>可以去 Bónus (小猪超市)，价格实惠，买早餐、水、零食都是不错的选择。</li>
+            <p style="padding-left: 2em;">注意查询Google Maps上的营业时间。纪念品店关门时间多在4-6 p.m.,小猪超市有晚9:00关门的，也有24小时营业的</p>
+            <p><li><strong>地图参考（Google Maps）：</strong><a href="https://maps.app.goo.gl/bz3bazetUAzynN9w5" target="_blank">第一天下午景点地图</a></li></p>
+            <div class="tip">
+                <div class="image-container">
+                    <img src="leiDay1.png" alt="雷克雅未克City walk-D1" style="max-width: 700px; border: 1px solid #ddd;" />
+                </div>
+            </div>
+        </div>
+
+        <div class="day-block">
+            <h4 id="day2">第二天：出海观鲸 & 探索博物馆</h4>
+            <p>参加观鲸团，建议提前预定。港口在哈帕音乐厅附近。我是订的Elding 公司的团，可经 Troll.is 预定。</p>
+            <li><strong>景点推荐（非游玩顺序，请自行安排）：</strong></li>
+            <ul>
+                <li style="padding-left: 2em;">熔岩秀 (Lava Show)</li>
+                <li style="padding-left: 2em;">冰岛国家美术馆 (The National Gallery of Iceland)</li>
+                <li style="padding-left: 2em;">维京传奇博物馆 (Saga Museum)</li>
+                <li style="padding-left: 2em;">雷克雅未克艺术博物馆 (Reykjavík Art Museum Hafnarhús)</li>
+                <li style="padding-left: 2em;">珍珠楼 (Perlan) - 内有旋转餐厅和观景台</li>
+                <li style="padding-left: 2em;">雷克雅未克海事博物馆 (Reykjavík Maritime Museum)</li>
+                <li style="padding-left: 2em;">冰岛国家博物馆 (National Museum of Iceland)</li>
+                <li style="padding-left: 2em;">冰岛飞越 (FlyOver Iceland)</li>
+                <li style="padding-left: 2em;">哈帕音乐厅 (Harpa Concert Hall)</li>
+            </ul>
+            <ul>
+                <li><strong>观鲸贴士：</strong>记得去船公司免费领取专业的防风防水连体服。想要最佳视野，就一直待在船头！</li>
+                <li><strong>观鲸预定：</strong><a href="https://troll.is/fun-activities/activities-in-iceland/whale-watching-in-reykjavik/" target="_blank">Troll.is 观鲸团链接</a></li>
+                <li><strong>博物馆推荐：</strong><a href="https://www.xiaohongshu.com/explore/66c92fd3000000001f01847d" target="_blank">参考小红书推荐</a></li>
+                <li><strong>地图参考（Google Maps）：</strong><a href="https://maps.app.goo.gl/QsLASWbehmZqfChM7" target="_blank">第二天景点地图</a></li>
+            </ul>
+            <div class="tip">
+            
+                <div class="image-container">
+                    <img src="leiDay2.png" alt="雷克雅未克City walk-D2" style="max-width: 700px; border: 1px solid #ddd;" />
+                </div>
+            </div>
+        </div>
+
+        <div class="day-block">
+            <h4 id="day3-5">第三至五天：南岸三日精华游（跟团）</h4>
+            
+            <p><strong>我报的团：</strong><a href="https://troll.is/iceland-vacation-packages/multi-day-tours/3-day-south-coast-winter/" target="_blank">Troll.is 南岸三日冬季游</a></p>
+            <p>参加旅行团是游览南岸的一种方式，省心省力，2晚住宿+3日餐食，且能去到一些自驾难以到达的地方。休息区也有免费厕所，这个自己找有些费劲了。</p>
+            <p>有中文团或者英文团，英文团至少听懂集合时间和地点就没问题，如果想听导游讲解，可以准备景点相关话题；和同行人聊天，准备些small talk，参考第五部份实用信息-语言交流。</p>
+            <p>早上提前30分钟在指定站点等候接车。</p>
+            <p>我导游有调整游玩顺序，以下是最终的行程，仅供参考</p>
+            <h5>Day 1: 瀑布之旅</h5>
+            <p>主要游览南岸的几大著名瀑布 + 晚上看极光。</p>
+            <li><strong>景点（按游玩顺序）：</strong></li>
+            <ul>
+                <li style="padding-left: 2em;">1、辛格韦德利国家公园 (Thingvellir National Park) - 冰川国家公园</li>
+                <li style="padding-left: 2em;">2、豪卡达尔地热区 (Haukadalur Geothermal Area) - 间歇泉</li>
+                <li style="padding-left: 2em;">3、盖歇尔间歇泉中心 (Geysir Centre) - 午餐</li>
+                <li style="padding-left: 2em;">4、黄金瀑布 (Gullfoss Waterfall) - 冰川瀑布</li>
+                <li style="padding-left: 2em;">5、兰加丁 (Rangárþing eystra) - 瀑布</li>
+                <li style="padding-left: 2em;">6、斯科加瀑布 (Skógafoss) - 《权利的游戏》取景瀑布</li>
+                <li style="padding-left: 2em;">7、斯科加瀑布餐厅 (Skogafoss Bistro Bar) - 晚餐，需要提前预约</li>
+                <li style="padding-left: 2em;">8、德兰斯利德酒店 (Hotel Drangshlid by Ourhotels) - 可以看到极光</li>
+            </ul>
+            <p><strong>地图参考（Google Maps）：</strong><a href="https://maps.app.goo.gl/EgrrNUaMbUdCK6kv8" target="_blank">三日游 Day 1 地图</a></p>
+            <div class="tip">
+                <div class="image-container">
+                    <img src="tourDay1.png" alt="南岸三日D1" style="max-width: 700px; border: 1px solid #ddd;" />
+                </div>
+            </div>
+
+            <h5>Day 2: 冰川与蓝冰洞</h5>
+            <p>核心体验是蓝冰洞 + 晚上极光。去蓝洞需要换乘专业越野车，在专业向导带领下进入，洞内体验约1小时。</p>
+            <li><strong>景点（按游玩顺序）：</strong></li>
+            <ul>
+                <li style="padding-left: 2em;">1、雷尼斯黑沙滩 (Reynisfjara Beach) - 黑沙滩</li>
+                <li style="padding-left: 2em;">2、瓦特纳冰川 (Vatnajokull) - 欧洲最大的冰川</li>
+                <li style="padding-left: 2em;">3、杰古沙龙冰河湖观景台 (Viewpoint over Jökulsárlón) - 钻石沙滩附近</li>
+                <li style="padding-left: 2em;">4、教堂地板 (Kirkjugólf Natural Monument) - 有特殊地貌，像蜂窝一样的地表，很小一块，不推荐</li>
+                <li style="padding-left: 2em;">5、修女咖啡馆 (Systrakaffi) - 晚餐，需要提前预约</li>
+                <li style="padding-left: 2em;">6、赫里弗内斯旅馆 (Hrifunes INN by Ourhotels)  - 可以看到极光</li>
+            </ul>
+            <p><strong>地图参考（Google Maps）：</strong><a href="https://maps.app.goo.gl/1vSzFbjyD66Q2YT8A" target="_blank">三日游 Day 2 地图</a></p>
+            <div class="tip">
+                <div class="image-container">
+                    <img src="tourDay2.png" alt="南岸三日D2" style="max-width: 700px; border: 1px solid #ddd;" />
+                </div>
+            </div>
+
+            <h5>Day 3: 冰川徒步</h5>
+            <p>在冰川上进行徒步，会提供专业冰爪和安全装备，往返约3小时，强度适中。结束后返回雷克雅未克。</p>
+            <li><strong>景点（按游玩顺序）：</strong></li>
+            <ul>
+                <li style="padding-left: 2em;">索尔黑马冰川 (Sólheimajökull) - 冰川徒步地点</li>
+                <li style="padding-left: 2em;">斯科加瀑布餐厅 (Skogafoss Bistro Bar) - 午餐</li>
+                <li style="padding-left: 2em;">冰岛传统冰淇淋店 (Ísbúðin Okkar) - 传统冰淇凌店周边也有很多超市</li>
+            </ul>
+            <p><strong>地图参考（Google Maps）：</strong><a href="https://maps.app.goo.gl/z16mKgrM1Y9GquYc8" target="_blank">三日游 Day 3 地图</a></p>
+            <div class="tip">
+                <div class="image-container">
+                    <img src="tourDay3.png" alt="南岸三日D3" style="max-width: 700px; border: 1px solid #ddd;" />
+                </div>
+            </div>
+        </div>
+
+        <div class="day-block">
+            <h4 id="day6">第六天：市内体验 & 告别冰岛</h4>
+            <p>上午寄存行李，观鲸后可以去体验独特的 <strong>Lava Show</strong> (熔岩秀，可在Klook预定)。
+                <p>晚上乘坐fly bus大巴前往机场附近住宿，准备回程。
+                <p><li><strong>lava show 购票：</strong><a href="https://www.klook.cn/zh-CN/activity/105422-lava-show-ticket-vik/" target="_blank">KLOOK购票</a></li>
+             
+            </p>
+        </div>
+
+        <h3 id="alt-plans">备选行程</h3>
+        <ul>
+            <li><strong>飞机看火山：</strong>可咨询小红书商家"bus fly"购买。</li>
+            <li><strong>史费拉大裂缝浮潜</strong></li>
+            <li><strong>雷克雅未克珍珠楼：</strong>内有旋转餐厅和观景台。</li>
+            <li><strong>蓝湖温泉：</strong>世界闻名的地热温泉。</li>
+            <li><strong>冰岛北部: </strong>可自驾前往北部，体验冰川徒步、冰河湖、火山口等。</li>
+        </ul>
+
+        <h2 id="part4">第四部分：预算参考（2025年3月）</h2>
+        <div class="note">
+            <p><strong>行程概览：</strong>总共10天，其中3.5天在路上，6.5天在冰岛。</p>
+            <h4>固定支出明细：</h4>
+            <ul>
+                <li><strong>南岸三日游：</strong>950 USD ≈ 6830 RMB</li>
+                <li><strong>观鲸活动：</strong>95 USD ≈ 700 RMB</li>
+                <li><strong>酒店住宿：</strong>4晚，共3800 RMB</li>
+                <li><strong>机票：</strong>9824 RMB</li>
+                <li><strong>签证费用：</strong>
+                    <ul style="padding-left: 2em;">
+                        <li>旅行社服务费：600 RMB</li>
+                        <li>签证费：690 RMB</li>
+                        <li>VFS预约费：220 RMB</li>
+                        <li>快递费：80 RMB</li>
+                        <li>合计：1590 RMB</li>
+                    </ul>
+                </li>
+            </ul>
+            <p><strong>固定支出总计：</strong>22744 RMB（含旅行团、住宿、签证、机票）</p>
+            <p><strong>餐饮参考：</strong>人均150-400 RMB/顿</p>
+        </div>
+
+        <!-- Part 4: Practical Info -->
+        <h2 id="part5">第五部分：实用信息</h2>
+
+        <h3 id="aurora">极光指南</h3>
+        <ul>
+            <li><strong>极光预测App：</strong><a href="https://www.xiaohongshu.com/explore/67079510000000002a037452" target="_blank">小红书App推荐与教程</a></li>
+            <li><strong>极光拍摄技巧：</strong><a href="https://www.xiaohongshu.com/explore/66fdb0ee000000002c02c939" target="_blank">手机/相机拍摄教程</a></li>
+        </ul>
+
+        <h3 id="shopping">购物与退税</h3>
+        <ul>
+            <li><strong>退税条件：</strong>在同一家商店单次消费超过 <strong>12,000冰岛克朗</strong>，付款时务必向店员索取退税单(Tax Free Form)。</li>
+            <li><strong>机场流程：</strong>建议<strong>先办理退税，再托运行李</strong>，因为海关有权要求检查购买的商品。退税款一般会退回到指定信用卡。</li>
+            <li><strong>退税填写教程：</strong><a href="https://www.xiaohongshu.com/explore/666ddc83000000001d0162a9" target="_blank">小红书教程</a></li>
+            <li><strong>机场退税地点：</strong><a href="http://xhslink.com/a/dZDjxM3aPMzfb" target="_blank">视频指引</a></li>
+        </ul>
+        
+        <h3 id="helsinki">芬兰赫尔辛基转机攻略</h3>
+        <ul>
+            <li>持申根签证可出机场。从机场坐火车到中央车站，可游览附近的红教堂和白教堂。</li>
+            <li><strong>出国芬兰转机教程：</strong><a href="https://www.xiaohongshu.com/explore/679b0107000000001703aad5?app_platform=ios&app_version=8.88&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBCTXtGVM_YnXvBjtOsf5RCBGkMRRYPstDT3dvKrb-UCI=&author_share=1&xhsshare=WeixinSession&shareRedId=N0o1Qjk6SEA2NzUyOTgwNjczOTo1NzZL&apptime=1750578947&share_id=c98b55722c8a4a9b92fa9f0755b170c5" target="_blank">出国赫尔辛基万塔机场转机教程</a></li>
+            <li><strong>冰岛回国芬兰转机教程：</strong><a href="https://www.xiaohongshu.com/explore/67a50e28000000001800eb33?app_platform=ios&app_version=8.88&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBtN-L8qIVIDBptFoPNMq3A6QF8z3UwOf2EAH0CZr__tc=&author_share=1&xhsshare=WeixinSession&shareRedId=N0o1Qjk6SEA2NzUyOTgwNjczOTo1NzZL&apptime=1750585629&share_id=fb2ddd3b61ce4fe3ab77728ecf4a7bcb" target="_blank">回国赫尔辛基万塔机场转机教程</a></li>
+            <li><strong>机场去芬兰市区购票指南：</strong><a href="http://xhslink.com/a/jbAYRIqp6Lzfb" target="_blank">市区火车购票指南</a></li>
+        </ul>
+
+        <h3 id="local-transport">冰岛本地交通与寄存</h3>
+      
+
+        <h4>电话打车</h4>
+        <ul>
+            <li><strong>电话号码：</strong>
+                <ul>
+                    <li style="padding-left: 2em;">雷克雅未克地区: <code>+354 588 5522</code></li>
+                    <li style="padding-left: 2em;">凯夫拉维克机场地区: <code>+354 420 1212</code></li>
+                </ul>
+            </li>
+            <li><strong>流程：</strong>打电话告知位置、目的地、人数和英文名。支持现金或信用卡支付。</li>
+            <li><strong>价格：</strong><strong>比较贵！</strong>7分钟车程约4600冰岛克朗（约247元人民币）。</li>
+        </ul>
+
+        <h4>行李寄存 (雷克雅未克)</h4>
+        <ul>
+            <li><strong>位置：</strong>BSÍ Bus Terminal Reykjavík，在车站主楼右手边。</li>
+            <div class="tip">
+                <div class="image-container">
+                    <img src="laguagestory.png" alt="寄存位置" style="max-width: 350px; border: 1px solid #ddd;" />
+                </div>
+            </div>
+            <li><strong>营业时间：</strong>24小时，有监控，安全可靠。</li>
+            <li><strong>价格参考：</strong>XL尺寸的寄存柜24小时约3990 ISK，可放下26寸行李箱+背包。</li>
+            <div class="tip">
+                <div class="image-container">
+                    <img src="storysize.png" alt="寄存尺寸" style="max-width: 350px; border: 1px solid #ddd;" />
+                </div>
+            </div>
+        </ul>
+
+        <h3 id="language">语言交流</h3>
+        <div>
+            <p>冰岛本地人英语普及率很高，大部分场合用英语交流没有问题。以下是一些实用场景的参考：</p>
+            
+            <h4>餐厅用语</h4>
+            <p class="note">餐厅一般都提供纸质菜单，按照前菜(Starters)、主菜(Main Course)、甜点(Desserts)分类，并标注了各种肉类。可以只点Main course。支付时可以使用现金或信用卡。</p>
+            <ul>
+                <li><strong>菜单类型：</strong>
+                    <ul style="padding-left: 2em;">
+                        <li>Starters/Appetizers - 前菜</li>
+                        <li>Main Course - 主菜</li>
+                        <li>Desserts - 甜点</li>
+                        <li>Beverages - 饮品</li>
+                    </ul>
+                </li>
+                <li><strong>肉类：</strong>
+                    <ul style="padding-left: 2em;">
+                        <li>Lamb - 羊肉（冰岛特色）</li>
+                        <li>Fish - 鱼类</li>
+                        <li>Beef - 牛肉</li>
+                        <li>Chicken - 鸡肉</li>
+                        <li>Fish & chip - 鱼薯条</li>
+                    </ul>
+                </li>
+                <li><strong>实用句子：</strong>
+                    <ul style="padding-left: 2em;">
+                        <li>"Can I have the menu, please?" - 请给我菜单</li>
+                        <li>"I would like this one." - 我要这个（指着菜单）</li>
+                        <li>"Can I pay by credit card?" - 可以刷卡吗？</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4>跟团用语</h4>
+            <p class="note">参加英文团时，记住会合时间（Meeting time）和地点（Meeting point）即可。如果对导游讲解的自然景观感兴趣，可以了解一些基础词汇，方便听懂导游讲解冰川、火山、苔藓等冰岛特色景观的小故事。</p>
+            <ul>
+                <li><strong>时间地点：</strong>
+                    <ul style="padding-left: 2em;">
+                        <li>"Meeting point" - 集合地点</li>
+                        <li>"Meeting time" - 集合时间</li>
+                        <li>"Pick-up location" - 接车地点</li>
+                    </ul>
+                </li>
+                <li><strong>自然景观：</strong>
+                    <ul style="padding-left: 2em;">
+                        <li>Glacier - 冰川</li>
+                        <li>Volcano - 火山</li>
+                        <li>Moss - 苔藓</li>
+                        <li>Northern Lights/Aurora - 北极光</li>
+                        <li>Waterfall - 瀑布</li>
+                        <li>Geyser - 间歇泉</li>
+                        <li>Black Sand Beach - 黑沙滩</li>
+                        <li>Ice Cave - 冰洞</li>
+                    </ul>
+                </li>
+                <li><strong>实用句子：</strong>
+                    <ul style="padding-left: 2em;">
+                        <li>"Could you tell me more about...?" - 能给我多讲讲...吗？</li>
+                        <li>"What time should we meet tomorrow?" - 明天什么时候集合？</li>
+                        <li>"How long will we stay here?" - 我们在这里停留多久？</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4>Small Talk 话题</h4>
+            <p class="note">跟团时可以和导游或其他游客聊天。以下是一些常见话题和对应的英文表达：</p>
+            <ul>
+                <li><strong>自我介绍：</strong>
+                    <ul style="padding-left: 2em;">
+                        <li>"I'm from China." - 我来自中国</li>
+                        <li>"I work as a [职业]." - 我的工作是...</li>
+                        <li>"This is my first time in Iceland." - 这是我第一次来冰岛</li>
+                    </ul>
+                </li>
+                <li><strong>旅行经历：</strong>
+                    <ul style="padding-left: 2em;">
+                        <li>"Which countries have you visited?" - 你去过哪些国家？</li>
+                        <li>"Where are you planning to go next?" - 你下一站打算去哪里？</li>
+                        <li>"Have you been to China?" - 你去过中国吗？</li>
+                        <li>"Which city/province in China did you like the most?" - 你最喜欢中国的哪个城市/省份？</li>
+                    </ul>
+                </li>
+                <li><strong>当天行程：</strong>
+                    <ul style="padding-left: 2em;">
+                        <li>"What was your favorite spot today?" - 今天你最喜欢哪个景点？</li>
+                        <li>"The [景点名] was amazing!" - [景点名]真是太棒了！</li>
+                        <li>"Did you take any good photos?" - 你拍到好照片了吗？</li>
+                        <li>"Have you seen the northern lights before?" - 你之前看过极光吗？</li>
+                    </ul>
+                </li>
+                <li><strong>实用短语：</strong>
+                    <ul style="padding-left: 2em;">
+                        <li>"Nice to meet you!" - 很高兴认识你！</li>
+                        <li>"That's interesting!" - 真有趣！</li>
+                        <li>"Me too!" - 我也是！</li>
+                        <li>"Could you take a photo for me?" - 能帮我拍张照片吗？</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <p style="text-align:center; margin-top:50px; color:#777; font-size:1.2em;">祝您有一段难忘的冰岛之旅！</p>
     </div>
-    <script src="script.js"></script>
 </body>
-</html> 
+</html>
