@@ -237,57 +237,20 @@
             transform: rotate(-25deg);
             user-select: none;
             white-space: nowrap;
-        }   
-        /* 添加图片相关样式 */
-        .image-container {
-            position: relative;
-            width: 100%;
-            margin: 1rem 0;
-            background-color: #f0f0f0;
-            overflow: hidden;
         }
-
-        .image-container::before {
-            content: "";
+        /* 添加图片样式 */
+        img {
+            max-width: 100%;
+            height: auto;
             display: block;
-            padding-top: 25%; /* 修改从 56.25% 到 25%，使占位符更小 */
-        }
-
-        .image-container img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* 修改从 cover 到 contain，保持图片比例 */
-            opacity: 0;
+            margin: 1rem auto;
+            border-radius: 4px;
             transition: opacity 0.3s ease;
+            loading: lazy; /* 使用原生懒加载 */
         }
 
-        .image-container img.loaded {
-            opacity: 1;
-        }
-
-        .image-container.loading::after {
-            content: "Loading...";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #666;
-            font-size: 14px;
-        }
-
-        /* 添加骨架屏动画 */
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        .image-container.loading {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
+        .image-container {
+            margin: 1rem 0;
         }
     </style>
     <script>
@@ -352,90 +315,6 @@
                         history.pushState(null, null, targetId);
                     }
                 });
-            });
-
-            // 添加图片懒加载脚本
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        const container = img.parentElement;
-                        
-                        // 如果图片已经加载过，跳过
-                        if (img.classList.contains('loaded')) return;
-                        
-                        // 添加加载状态
-                        container.classList.add('loading');
-                        
-                        // 设置图片源
-                        if (img.dataset.src) {
-                            img.src = img.dataset.src;
-                        }
-                        
-                        // 图片加载完成后的处理
-                        img.onload = () => {
-                            img.classList.add('loaded');
-                            container.classList.remove('loading');
-                            observer.unobserve(img);
-                        };
-                        
-                        // 图片加载失败的处理
-                        img.onerror = () => {
-                            container.classList.remove('loading');
-                            container.classList.add('error');
-                            observer.unobserve(img);
-                        };
-                    }
-                });
-            }, {
-                rootMargin: '50px 0px', // 提前50px开始加载
-                threshold: 0.1 // 当图片有10%进入视口时触发
-            });
-
-            // 处理所有图片
-            function processImages() {
-                const images = document.querySelectorAll('img:not(.processed)');
-                
-                images.forEach(img => {
-                    // 跳过已处理的图片
-                    if (img.classList.contains('processed')) return;
-                    
-                    // 创建容器
-                    const container = document.createElement('div');
-                    container.className = 'image-container';
-                    
-                    // 保存原始src到data-src
-                    img.dataset.src = img.src;
-                    // 设置占位图
-                    img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-                    
-                    // 将图片包装到容器中
-                    img.parentNode.insertBefore(container, img);
-                    container.appendChild(img);
-                    
-                    // 标记为已处理
-                    img.classList.add('processed');
-                    
-                    // 观察图片
-                    imageObserver.observe(img);
-                });
-            }
-
-            // 初始处理
-            processImages();
-
-            // 监听DOM变化，处理动态添加的图片
-            const observerDOM = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.addedNodes.length) {
-                        processImages();
-                    }
-                });
-            });
-
-            observerDOM.observe(document.body, {
-                childList: true,
-                subtree: true
             });
         });
     </script>
