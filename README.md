@@ -4,7 +4,7 @@
 
 - 冰岛 🇮🇸  - 伦敦🇬🇧 （TODO）
 
-点击https://elenazinn.github.io/travel-guides/查看
+点击查看 https://elenazinn.github.io/travel-guides/
 
   
 
