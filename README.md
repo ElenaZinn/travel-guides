@@ -1,8 +1,12 @@
 # Travel Guides Collection
 
-这是一个旅行攻略集合网站，目前包含以下目的地的详细旅游指南：
+这是一个旅行攻略集合网站，目前包含以下目的地的详细旅游指南，
 
 - 冰岛 🇮🇸  - 伦敦🇬🇧 （TODO）
+
+点击https://elenazinn.github.io/travel-guides/查看
+
+  
 
 The Cursor implementation contains the directory on the left, the watermark, and a detailed travel history
 
